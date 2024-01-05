@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+# ROOT and data files
+*.dat
+*.root
