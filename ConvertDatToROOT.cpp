@@ -8,6 +8,8 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
+#include <TFile.h>
+#include <TTree.h>
 using namespace std;
 
 void ConvertDatToROOT(string filename) {
@@ -25,8 +27,8 @@ void ConvertDatToROOT(string filename) {
     cout << "file opened" << endl;
     // construct TTree and .root file, initialize branches
     string outfile_name = filename.substr(0, end) + ".root";
-    TFile* outfile = outfile = TFile::Open(outfile_name.c_str(), "RECREATE");
-    TTree* nest = new TTree("nest", "NEST events");
+    unique_ptr<TFile> outfile(TFile::Open(outfile_name.c_str(), "RECREATE"));
+    auto nest = new TTree("nest", "NEST events");
     Float_t x_cm = 0;
     Float_t y_cm = 0;
     Float_t z_cm = 0;
@@ -62,9 +64,7 @@ void ConvertDatToROOT(string filename) {
     }
     nest->Print();
     nest->Write();
-
     fp.close();
-    delete outfile;
     return;
 }
 
